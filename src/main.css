@@ -231,3 +231,9 @@ input:checked ~ .bubble::after {
     text-decoration: line-through;
     color: var(--grey);
 }
+
+.todo-item.done .todo-content span {
+    text-decoration: line-through;
+    color: var(--grey);
+}
+

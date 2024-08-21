@@ -7,17 +7,49 @@ const name = ref("");
 const input_content = ref("");
 const input_category = ref(null);
 
+const addTodo = () => {
+  if (input_content.value.trim() === "" || input_category.value === null) {
+    return;
+  }
+  todos.value.push({
+    content: input_content.value,
+    category: input_category.value,
+    done: false,
+    createdAt: Date.now(),
+  });
+  input_content.value = "";
+  input_category.value = null;
+};
+
 const todos_asc = computed(() =>
   todos.value.sort((a, b) => {
-    return a.createdAt - b.createdAt;
+    return b.createdAt - a.createdAt;
   }),
 );
-const addTodo = () => {};
+
+const toggleEdit = (todo) => {
+  todo.isEditing = !todo.isEditing;
+};
+
+const removeItem = (todo) => {
+  todos.value = todos.value.filter((item) => item !== todo);
+};
+
+watch(
+  todos,
+  (newItems) => {
+    localStorage.setItem("todos", JSON.stringify(newItems));
+  },
+  { deep: true },
+);
+
 watch(name, (newName) => {
   localStorage.setItem("name", newName);
 });
+
 onMounted(() => {
   name.value = localStorage.getItem("name") || "";
+  todos.value = JSON.parse(localStorage.getItem("todos")) || [];
 });
 </script>
 
@@ -30,7 +62,7 @@ onMounted(() => {
       </h2>
     </section>
     <section class="create-todo">
-      <h3>MA TODOLIST</h3>
+      <h3>CREER MA TODOLIST</h3>
       <form @submit.prevent="addTodo">
         <h4>Que voulez vous ajouter à votre liste ?</h4>
         <input
@@ -65,6 +97,38 @@ onMounted(() => {
         </div>
         <input type="submit" value="Ajouter à ma liste" />
       </form>
+    </section>
+    <section class="todo-list">
+      <h3>LISTE DES TACHES</h3>
+      <div class="list">
+        <div
+          v-for="todo in todos_asc"
+          key="todo.createdAt"
+          :class="`todo-item ${todo.done && 'done'}`"
+        >
+          <label>
+            <input v-model="todo.done" type="checkbox" />
+            <span
+              :class="`bubble ${todo.category === 'travail' ? 'business' : 'personal'}`"
+            ></span>
+          </label>
+          <div class="todo-content">
+            <input
+              v-if="todo.isEditing"
+              v-model="todo.content"
+              type="text"
+              @blur="toggleEdit(todo)"
+            />
+            <span v-else>{{ todo.content }}</span>
+          </div>
+          <div class="actions">
+            <button class="edit" @click="toggleEdit(todo)">Editer</button>
+          </div>
+          <div class="actions">
+            <button class="delete" @click="removeItem(todo)">Supprimer</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 </template>
