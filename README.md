@@ -1,5 +1,31 @@
-# Vue 3 + Vite
+# Vue.js - Simple To-Do List
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Ce projet est une to-do-list simple développée en Vue.js. L'utilisateur peut ajouter, modifier,
+marquer comme complétée ou supprimer des tâches. Les données sont stockées localement dans le navigateur.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Prérequis
+
+Assurez-vous d'avoir Node.js et npm installés sur votre machine.
+
+- [Node.js](https://nodejs.org/)
+- npm (généralement inclus avec Node.js)
+
+## Installation
+
+Clonez le dépôt et installez les dépendances nécessaires :
+
+```bash
+git clone https://github.com/samueltomen/todolist.git
+cd nom-du-repo
+npm install
+```
+
+## Lancez l'application
+
+```bash
+npm run dev
+```
+
+## Licence
+
+by Samuel Tomen Nana
