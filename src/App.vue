@@ -1,30 +1,70 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { computed, onMounted, ref, watch } from "vue";
+
+const todos = ref([]);
+const name = ref("");
+
+const input_content = ref("");
+const input_category = ref(null);
+
+const todos_asc = computed(() =>
+  todos.value.sort((a, b) => {
+    return a.createdAt - b.createdAt;
+  }),
+);
+const addTodo = () => {};
+watch(name, (newName) => {
+  localStorage.setItem("name", newName);
+});
+onMounted(() => {
+  name.value = localStorage.getItem("name") || "";
+});
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <main class="app">
+    <section class="greeting">
+      <h2 class="title">
+        Bonjour,
+        <input v-model="name" placeholder="Ecrire votre nom ici" type="text" />
+      </h2>
+    </section>
+    <section class="create-todo">
+      <h3>MA TODOLIST</h3>
+      <form @submit.prevent="addTodo">
+        <h4>Que voulez vous ajouter à votre liste ?</h4>
+        <input
+          v-model="input_content"
+          placeholder="ex: Faire les courses"
+          type="text"
+        />
+        <h4>Choisir une categorie</h4>
+        <div class="options">
+          <label>
+            <input
+              id="category"
+              v-model="input_category"
+              name="category"
+              type="radio"
+              value="travail"
+            />
+            <span class="bubble business"></span>
+            <div>Travail</div>
+          </label>
+          <label>
+            <input
+              id="category"
+              v-model="input_category"
+              name="category"
+              type="radio"
+              value="personnel"
+            />
+            <span class="bubble personal"></span>
+            <div>Personnel</div>
+          </label>
+        </div>
+        <input type="submit" value="Ajouter à ma liste" />
+      </form>
+    </section>
+  </main>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
